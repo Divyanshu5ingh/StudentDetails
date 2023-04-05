@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
 namespace StudentDetails.Students;
 
+[Authorize]
 public class StudentAppService :
     CrudAppService<
         Student, 

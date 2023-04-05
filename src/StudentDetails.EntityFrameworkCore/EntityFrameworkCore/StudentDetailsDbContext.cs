@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using StudentDetails.Students;
+using System.Reflection.Emit;
+using System.Threading.Tasks;
+using System.Threading;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -14,6 +18,7 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Volo.Abp.Validation;
 
 namespace StudentDetails.EntityFrameworkCore;
 
@@ -84,12 +89,20 @@ public class StudentDetailsDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.Entity<Student>()
+           .HasIndex(p => p.Email)
+           .IsUnique();
         builder.Entity<Student>(b =>
         {
             b.ToTable(StudentDetailsConsts.DbTablePrefix + "Students",
                 StudentDetailsConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
             b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+
         });
+
+
     }
+    
+
 }
